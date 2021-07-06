@@ -10,14 +10,40 @@ class MeuGrafo(GrafoListaAdjacencia):
         Onde X, Z e W são vértices no grafo que não tem uma aresta entre eles.
         :return: Uma lista com os pares de vértices não adjacentes
         '''
-        pass # Apague essa instrução e inicie seu código aqui
+        vertices_nao_adjacentes = []
+
+        for v in self.N:
+            vertices_adjacentes = []
+            for a in self.A:
+                v1 = self.A[a].getV1()
+                v2 = self.A[a].getV2()
+                if v1 == v:
+                    vertices_adjacentes.append(v2)
+                elif v2 == v:
+                    vertices_adjacentes.append(v1)
+
+            for vt in self.N:
+                if vt != v and vt not in vertices_adjacentes:
+                    a_test_1 = f'{v}-{vt}'
+                    a_test_2 = f'{vt}-{v}'
+                    if a_test_1 not in vertices_nao_adjacentes and a_test_2 not in vertices_nao_adjacentes:
+                        vertices_nao_adjacentes.append(f'{v}-{vt}')
+
+            vertices_adjacentes = []
+
+        return vertices_nao_adjacentes
 
     def ha_laco(self):
         '''
         Verifica se existe algum laço no grafo.
         :return: Um valor booleano que indica se existe algum laço.
         '''
-        pass
+        for a in self.A:
+            if self.A[a].getV1() == self.A[a].getV2():
+                return True
+
+        return False
+
 
     def grau(self, V=''):
         '''
