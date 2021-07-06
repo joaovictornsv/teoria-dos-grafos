@@ -9,5 +9,9 @@
   ],
   "python.testing.pytestEnabled": false,
   "python.testing.nosetestsEnabled": false,
-  "python.testing.unittestEnabled": true
+  "python.testing.unittestEnabled": true,
+  "testExplorer.errorDecoration": true,
+  "testExplorer.errorDecorationHover": true,
+  "testExplorer.codeLens": true,
+  "testExplorer.gutterDecoration": true
 }
