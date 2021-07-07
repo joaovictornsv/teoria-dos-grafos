@@ -69,6 +69,13 @@ class TestGrafo(unittest.TestCase):
         self.g_d = MeuGrafo(['A', 'B', 'C', 'D'])
         self.g_d.adicionaAresta('asd', 'A', 'B')
 
+        # Grafo adicionado por João Victor
+        # Grafo com arestas paralelas onde os vértices estão "invertidos"
+        # Exemplo: a1=(A-B) e a2=(B-A)
+        self.g_a_p = MeuGrafo(['A', 'B'])
+        self.g_a_p.adicionaAresta('a1', 'A', 'B')
+        self.g_a_p.adicionaAresta('a2', 'B', 'A')
+
     def test_adiciona_aresta(self):
         self.assertTrue(self.g_p.adicionaAresta('a10', 'J', 'C'))
         with self.assertRaises(ArestaInvalidaException):
@@ -133,6 +140,9 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse(self.g_c2.ha_paralelas())
         self.assertFalse(self.g_c3.ha_paralelas())
         self.assertTrue(self.g_l1.ha_paralelas())
+
+        # Teste adicionado por João Victor
+        self.assertTrue(self.g_a_p.ha_paralelas())
 
     def test_arestas_sobre_vertice(self):
         self.assertEqual(set(self.g_p.arestas_sobre_vertice('J')), set(['a1']))
