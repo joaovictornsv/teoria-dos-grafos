@@ -1,5 +1,6 @@
 material_professor
 *.zip
+atividades_grafos
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
