@@ -155,7 +155,6 @@ class MeuGrafo(GrafoListaAdjacencia):
         :return: Um grafo contendo a árvore de busca ou árvore DFS 
         '''
 
-
         finalizada = False
 
         vertices_examinados = {}
@@ -287,9 +286,6 @@ class MeuGrafo(GrafoListaAdjacencia):
         }
         
 
-        # arestas_examinadas = []
-        # arestas_de_retorno = []
-
         vertice_atual = V
 
         comeco = True
@@ -297,20 +293,9 @@ class MeuGrafo(GrafoListaAdjacencia):
         grafo_final = MeuGrafo()
 
 
-        ## WHILE NOT FINALIZADA
-        '''
-            montar vertice atual no grafo_final
-            pegar arestas incidentes no vertice atual e coloca-las numa lista
-            percorrer uma por uma e:
-                colocar em uma fila os vertices do proximo loop
-                monta-las no grafo_final. visitada = True
-        '''
-
         fila_vertices = []
 
         while (finalizada == False):
-            print(vertice_atual)
-            print(vertices_examinados[vertice_atual])
             arestas_incidentes = self.arestas_sobre_vertice(vertice_atual)
             for a in arestas_incidentes:
                 v1 = self.A[a].getV1()
@@ -336,13 +321,11 @@ class MeuGrafo(GrafoListaAdjacencia):
             vertices_examinados[vertice_atual]['examinado'] = True
 
             if vertices_examinados[vertice_atual]['examinado']:
-                print(f'> vertice {vertice_atual}')
                 grafo_final.adicionaVertice(vertice_atual)
 
             if vertices_examinados[vertice_atual]['root'] == False:
                 v_pai = vertices_examinados[vertice_atual]['pai']
                 aresta_do_pai = vertices_examinados[vertice_atual]['arestaPai']
-                print(f'> aresta {aresta_do_pai}')
 
                 grafo_final.adicionaAresta(aresta_do_pai, vertice_atual, v_pai)
 
