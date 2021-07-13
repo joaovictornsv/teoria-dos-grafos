@@ -257,3 +257,102 @@ class MeuGrafo(GrafoListaAdjacencia):
                     continue
 
         return grafo_final
+
+    
+
+    def bfs(self, V=''):
+        '''
+        Realiza uma busca em largura (BFS) a partir do vértice especificado.
+        :return: Um grafo contendo a árvore de busca ou árvore BFS 
+        '''
+        finalizada = False
+
+        vertices_examinados = {}
+
+        for vt in self.N:
+            vertices_examinados[vt] = {
+                'examinado': False,
+                'root': False,
+                'pai': False,
+                'temPai': False,
+                'arestaPai': ''
+            }
+
+        vertices_examinados[V] = {
+            'examinado': True,
+            'root': True,
+            'pai': V,
+            'temPai': True,
+            'arestaPai': ''
+        }
+        
+
+        # arestas_examinadas = []
+        # arestas_de_retorno = []
+
+        vertice_atual = V
+
+        comeco = True
+
+        grafo_final = MeuGrafo()
+
+
+        ## WHILE NOT FINALIZADA
+        '''
+            montar vertice atual no grafo_final
+            pegar arestas incidentes no vertice atual e coloca-las numa lista
+            percorrer uma por uma e:
+                colocar em uma fila os vertices do proximo loop
+                monta-las no grafo_final. visitada = True
+        '''
+
+        fila_vertices = []
+
+        while (finalizada == False):
+            print(vertice_atual)
+            print(vertices_examinados[vertice_atual])
+            arestas_incidentes = self.arestas_sobre_vertice(vertice_atual)
+            for a in arestas_incidentes:
+                v1 = self.A[a].getV1()
+                v2 = self.A[a].getV2()
+                if v1 == vertice_atual:
+                    if not vertices_examinados[v2]['temPai']:
+                        vertices_examinados[v2]['pai'] = v1
+                        vertices_examinados[v2]['temPai'] = True
+                        vertices_examinados[v2]['arestaPai'] = a
+
+                    if vertices_examinados[v2]['examinado'] == False and v2 not in fila_vertices:
+                        fila_vertices.append(v2)
+
+                if v2 == vertice_atual:
+                    if not vertices_examinados[v1]['temPai']:
+                        vertices_examinados[v1]['pai'] = v2
+                        vertices_examinados[v1]['temPai'] = True
+                        vertices_examinados[v1]['arestaPai'] = a
+
+                    if vertices_examinados[v1]['examinado'] == False and v1 not in fila_vertices:
+                        fila_vertices.append(v1)
+
+            vertices_examinados[vertice_atual]['examinado'] = True
+
+            if vertices_examinados[vertice_atual]['examinado']:
+                print(f'> vertice {vertice_atual}')
+                grafo_final.adicionaVertice(vertice_atual)
+
+            if vertices_examinados[vertice_atual]['root'] == False:
+                v_pai = vertices_examinados[vertice_atual]['pai']
+                aresta_do_pai = vertices_examinados[vertice_atual]['arestaPai']
+                print(f'> aresta {aresta_do_pai}')
+
+                grafo_final.adicionaAresta(aresta_do_pai, vertice_atual, v_pai)
+
+
+            if vertice_atual in fila_vertices:
+               fila_vertices.remove(vertice_atual)
+               if len(fila_vertices) == 0:
+                   finalizada = True
+                   break
+
+            vertice_atual = fila_vertices[0]
+
+        return grafo_final
