@@ -76,6 +76,52 @@ class TestGrafo(unittest.TestCase):
         self.g_a_p.adicionaAresta('a1', 'A', 'B')
         self.g_a_p.adicionaAresta('a2', 'B', 'A')
 
+
+        # Grafos gabaritos DFS
+        self.g_p_dfs_J = MeuGrafo(['J', 'C', 'E', 'P', 'T', 'M', 'Z'])
+        self.g_p_dfs_J.adicionaAresta('a1', 'J', 'C')
+        self.g_p_dfs_J.adicionaAresta('a2', 'C', 'E')
+        self.g_p_dfs_J.adicionaAresta('a4', 'P', 'C')
+        self.g_p_dfs_J.adicionaAresta('a6', 'T', 'C')
+        self.g_p_dfs_J.adicionaAresta('a8', 'M', 'T')
+        self.g_p_dfs_J.adicionaAresta('a9', 'T', 'Z')
+
+        self.g_c_dfs_J = MeuGrafo(['J', 'C', 'E', 'P'])
+        self.g_c_dfs_J.adicionaAresta('a1', 'J', 'C')
+        self.g_c_dfs_J.adicionaAresta('a4', 'E', 'C')
+        self.g_c_dfs_J.adicionaAresta('a6', 'P', 'E')
+        
+        self.g_p_sem_paralelas_dfs_J = MeuGrafo(['J', 'C', 'E', 'P', 'M', 'T', 'Z'])
+        self.g_p_sem_paralelas_dfs_J.adicionaAresta('a1', 'J', 'C')
+        self.g_p_sem_paralelas_dfs_J.adicionaAresta('a2', 'C', 'E')
+        self.g_p_sem_paralelas_dfs_J.adicionaAresta('a3', 'P', 'C')
+        self.g_p_sem_paralelas_dfs_J.adicionaAresta('a4', 'T', 'C')
+        self.g_p_sem_paralelas_dfs_J.adicionaAresta('a6', 'M', 'T')
+        self.g_p_sem_paralelas_dfs_J.adicionaAresta('a7', 'T', 'Z')
+
+        # Grafos gabaritos BFS
+        self.g_p_bfs_J = MeuGrafo(['J', 'C', 'E', 'P', 'T', 'M', 'Z'])
+        self.g_p_bfs_J.adicionaAresta('a1', 'J', 'C')
+        self.g_p_bfs_J.adicionaAresta('a2', 'C', 'E')
+        self.g_p_bfs_J.adicionaAresta('a4', 'P', 'C')
+        self.g_p_bfs_J.adicionaAresta('a6', 'T', 'C')
+        self.g_p_bfs_J.adicionaAresta('a7', 'M', 'C')
+        self.g_p_bfs_J.adicionaAresta('a9', 'T', 'Z')
+
+        self.g_c_bfs_J = MeuGrafo(['J', 'C', 'E', 'P'])
+        self.g_c_bfs_J.adicionaAresta('a1','J','C')
+        self.g_c_bfs_J.adicionaAresta('a2', 'J', 'E')
+        self.g_c_bfs_J.adicionaAresta('a3', 'J', 'P')
+
+        self.g_p_sem_paralelas_bfs_J = MeuGrafo(['J', 'C', 'E', 'P', 'M', 'T', 'Z'])
+        self.g_p_sem_paralelas_bfs_J.adicionaAresta('a1', 'J', 'C')
+        self.g_p_sem_paralelas_bfs_J.adicionaAresta('a2', 'C', 'E')
+        self.g_p_sem_paralelas_bfs_J.adicionaAresta('a3', 'P', 'C')
+        self.g_p_sem_paralelas_bfs_J.adicionaAresta('a4', 'T', 'C')
+        self.g_p_sem_paralelas_bfs_J.adicionaAresta('a5', 'M', 'C')
+        self.g_p_sem_paralelas_bfs_J.adicionaAresta('a7', 'T', 'Z')
+
+
     def test_adiciona_aresta(self):
         self.assertTrue(self.g_p.adicionaAresta('a10', 'J', 'C'))
         with self.assertRaises(ArestaInvalidaException):
@@ -167,34 +213,28 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse((self.g_l5.eh_completo()))
 
     def test_dfs(self):
+        self.assertEqual(self.g_p.dfs('J'), self.g_p_dfs_J)
         self.assertEqual(set(self.g_p.dfs('J').N), set(self.g_p.N[:]))
         self.assertEqual(set(self.g_p.dfs('J').A.keys()), set(['a1', 'a2', 'a4', 'a6', 'a8', 'a9']))
 
+        self.assertEqual(self.g_c.dfs('J'), self.g_c_dfs_J)
         self.assertEqual(set(self.g_c.dfs('J').N), set(self.g_c.N[:]))
         self.assertEqual(set(self.g_c.dfs('J').A.keys()), set(['a1', 'a4', 'a6']))
 
-        self.assertEqual(set(self.g_l1.dfs('A').N), set(['A', 'B']))
-        self.assertEqual(set(self.g_l1.dfs('A').A.keys()), set(['a2']))
-
+        self.assertEqual(self.g_p_sem_paralelas.dfs('J'), self.g_p_sem_paralelas_dfs_J)
         self.assertEqual(set(self.g_p_sem_paralelas.dfs('J').N), set(self.g_p_sem_paralelas.N[:]))
         self.assertEqual(set(self.g_p_sem_paralelas.dfs('J').A.keys()), set(['a1', 'a2', 'a3', 'a4', 'a6', 'a7']))
 
-        self.assertEqual(set(self.g_l3.dfs('C').N), set(['C', 'A']))
-        self.assertEqual(set(self.g_l3.dfs('C').A.keys()), set(['a1']))
-
     
     def test_bfs(self):
+        self.assertEqual(self.g_p.bfs('J'), self.g_p_bfs_J)
         self.assertEqual(set(self.g_p.bfs('J').N), set(self.g_p.N[:]))
         self.assertEqual(set(self.g_p.bfs('J').A.keys()), set(['a1', 'a2', 'a4', 'a6', 'a7', 'a9']))
 
+        self.assertEqual(self.g_c.bfs('J'), self.g_c_bfs_J)
         self.assertEqual(set(self.g_c.bfs('J').N), set(self.g_c.N[:]))
         self.assertEqual(set(self.g_c.bfs('J').A.keys()), set(['a1', 'a2', 'a3']))
 
-        self.assertEqual(set(self.g_l1.bfs('A').N), set(['A', 'B']))
-        self.assertEqual(set(self.g_l1.bfs('A').A.keys()), set(['a2']))
-
+        self.assertEqual(self.g_p_sem_paralelas.bfs('J'), self.g_p_sem_paralelas_bfs_J)
         self.assertEqual(set(self.g_p_sem_paralelas.bfs('J').N), set(self.g_p_sem_paralelas.N[:]))
         self.assertEqual(set(self.g_p_sem_paralelas.bfs('J').A.keys()), set(['a1', 'a2', 'a3', 'a4', 'a5', 'a7']))
-
-        self.assertEqual(set(self.g_l3.bfs('C').N), set(['C', 'A']))
-        self.assertEqual(set(self.g_l3.bfs('C').A.keys()), set(['a1']))
