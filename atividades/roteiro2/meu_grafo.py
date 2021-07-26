@@ -188,7 +188,6 @@ class MeuGrafo(GrafoListaAdjacencia):
         grafo_final.adicionaVertice(vertice_atual)
 
         while(finalizada != True):
-            sleep(0.1)
             if vertices_examinados[vertice_atual]['examinado'] == True and vertice_atual != V:
                 vertice_atual == vertices_examinados[V]['pai']
                 continue
@@ -209,6 +208,9 @@ class MeuGrafo(GrafoListaAdjacencia):
                         todas_arestas_examinadas = False
                         v1 = self.A[aresta_incidente].getV1()
                         v2 = self.A[aresta_incidente].getV2()
+                        if v1 == v2:
+                            continue
+
                         if v1 == vertice_atual:
                             if vertices_examinados[v2]['examinado'] == False and vertices_examinados[v1]['pai'] != v2 and vertices_examinados[v2]['ehPai'] == False:
                                 vertices_examinados[v2]['pai'] = vertice_atual
@@ -300,6 +302,9 @@ class MeuGrafo(GrafoListaAdjacencia):
             for a in arestas_incidentes:
                 v1 = self.A[a].getV1()
                 v2 = self.A[a].getV2()
+                if v1 == v2:
+                    continue
+                
                 if v1 == vertice_atual:
                     if not vertices_examinados[v2]['temPai']:
                         vertices_examinados[v2]['pai'] = v1
