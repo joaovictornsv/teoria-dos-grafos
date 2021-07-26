@@ -90,6 +90,16 @@ class TestGrafo(unittest.TestCase):
         self.g_c_dfs_J.adicionaAresta('a1', 'J', 'C')
         self.g_c_dfs_J.adicionaAresta('a4', 'E', 'C')
         self.g_c_dfs_J.adicionaAresta('a6', 'P', 'E')
+
+        self.g_a_p_dfs_A = MeuGrafo(['A', 'B'])
+        self.g_a_p_dfs_A.adicionaAresta('a1', 'A', 'B')
+
+        self.g_l1_dfs_A = MeuGrafo(['A', 'B'])
+        self.g_l1_dfs_A.adicionaAresta('a2', 'A', 'B')
+        
+        self.g_c2_dfs_Nina = MeuGrafo(['Nina', 'Maria'])
+        self.g_c2_dfs_Nina.adicionaAresta('amiga', 'Nina', 'Maria')
+
         
         self.g_p_sem_paralelas_dfs_J = MeuGrafo(['J', 'C', 'E', 'P', 'M', 'T', 'Z'])
         self.g_p_sem_paralelas_dfs_J.adicionaAresta('a1', 'J', 'C')
@@ -112,6 +122,15 @@ class TestGrafo(unittest.TestCase):
         self.g_c_bfs_J.adicionaAresta('a1','J','C')
         self.g_c_bfs_J.adicionaAresta('a2', 'J', 'E')
         self.g_c_bfs_J.adicionaAresta('a3', 'J', 'P')
+
+        self.g_l1_bfs_A = MeuGrafo(['A', 'B'])
+        self.g_l1_bfs_A.adicionaAresta('a2', 'A', 'B')
+
+        self.g_a_p_bfs_A = MeuGrafo(['A', 'B'])
+        self.g_a_p_bfs_A.adicionaAresta('a1', 'A', 'B')
+
+        self.g_c2_bfs_Nina = MeuGrafo(['Nina', 'Maria'])
+        self.g_c2_bfs_Nina.adicionaAresta('amiga', 'Nina', 'Maria')
 
         self.g_p_sem_paralelas_bfs_J = MeuGrafo(['J', 'C', 'E', 'P', 'M', 'T', 'Z'])
         self.g_p_sem_paralelas_bfs_J.adicionaAresta('a1', 'J', 'C')
@@ -239,9 +258,21 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(set(self.g_c.dfs('J').N), set(self.g_c.N[:]))
         self.assertEqual(set(self.g_c.dfs('J').A.keys()), set(['a1', 'a4', 'a6']))
 
+        self.assertEqual(self.g_c2_dfs_Nina.dfs('Nina'), self.g_c2_dfs_Nina)
+        self.assertEqual(set(self.g_c2_dfs_Nina.dfs('Nina').N), set(self.g_c2_dfs_Nina.N[:]))
+        self.assertEqual(set(self.g_c2_dfs_Nina.dfs('Nina').A.keys()), set(['amiga']))
+
         self.assertEqual(self.g_p_sem_paralelas.dfs('J'), self.g_p_sem_paralelas_dfs_J)
         self.assertEqual(set(self.g_p_sem_paralelas.dfs('J').N), set(self.g_p_sem_paralelas.N[:]))
         self.assertEqual(set(self.g_p_sem_paralelas.dfs('J').A.keys()), set(['a1', 'a2', 'a3', 'a4', 'a6', 'a7']))
+
+        self.assertEqual(self.g_a_p.dfs('A'), self.g_a_p_dfs_A)
+        self.assertEqual(set(self.g_a_p.dfs('A').N), set(self.g_a_p_dfs_A.N[:]))
+        self.assertEqual(set(self.g_a_p.dfs('A').A.keys()), set(['a1']))
+
+        self.assertEqual(self.g_l1.dfs('A'), self.g_l1_dfs_A)
+        self.assertEqual(set(self.g_l1.dfs('A').N), set(['A', 'B']))
+        self.assertEqual(set(self.g_l1.dfs('A').A.keys()), set(['a2']))
 
     
     def test_bfs(self):
@@ -253,9 +284,21 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(set(self.g_c.bfs('J').N), set(self.g_c.N[:]))
         self.assertEqual(set(self.g_c.bfs('J').A.keys()), set(['a1', 'a2', 'a3']))
 
+        self.assertEqual(self.g_c2_bfs_Nina.bfs('Nina'), self.g_c2_bfs_Nina)
+        self.assertEqual(set(self.g_c2_bfs_Nina.bfs('Nina').N), set(self.g_c2_bfs_Nina.N[:]))
+        self.assertEqual(set(self.g_c2_bfs_Nina.bfs('Nina').A.keys()), set(['amiga']))
+
         self.assertEqual(self.g_p_sem_paralelas.bfs('J'), self.g_p_sem_paralelas_bfs_J)
         self.assertEqual(set(self.g_p_sem_paralelas.bfs('J').N), set(self.g_p_sem_paralelas.N[:]))
         self.assertEqual(set(self.g_p_sem_paralelas.bfs('J').A.keys()), set(['a1', 'a2', 'a3', 'a4', 'a5', 'a7']))
+
+        self.assertEqual(self.g_a_p.bfs('A'), self.g_a_p_bfs_A)
+        self.assertEqual(set(self.g_a_p.bfs('A').N), set(self.g_a_p_bfs_A.N[:]))
+        self.assertEqual(set(self.g_a_p.bfs('A').A.keys()), set(['a1']))
+
+        self.assertEqual(self.g_l1.bfs('A'), self.g_l1_bfs_A)
+        self.assertEqual(set(self.g_l1.bfs('A').N), set(['A', 'B']))
+        self.assertEqual(set(self.g_l1.bfs('A').A.keys()), set(['a2']))
 
     
     def test_caminho_dois_vertices(self):
@@ -274,12 +317,18 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse(self.g_desconexo_2.caminho_dois_vertices('A', 'B')[0])
         self.assertTrue(self.g_desconexo_2.caminho_dois_vertices('A', 'B')[1] == 0)
 
+        self.assertTrue(self.g_a_p.caminho_dois_vertices('A', 'B')[0])
+        self.assertTrue(self.g_a_p.caminho_dois_vertices('A', 'B')[1] == 1)
+
     
     def test_conexo(self):
         self.assertTrue(self.g_p.conexo())
         self.assertTrue(self.g_c.conexo())
+        self.assertTrue(self.g_a_p.conexo())
+
         self.assertFalse(self.g_desconexo_1.conexo())
         self.assertFalse(self.g_desconexo_2.conexo())
+        self.assertFalse(self.g_d.conexo())
 
     
     def test_caminho(self):
@@ -302,6 +351,7 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(set(self.g_c.ha_ciclo()), set(['J', 'a1', 'C', 'a4', 'E', 'a2', 'J']))
         self.assertEqual(set(self.g_a_p.ha_ciclo()), set(['A', 'a1', 'B', 'a2', 'A']))
         self.assertEqual(set(self.g_l1.ha_ciclo()), set(['A', 'a1', 'A']))
+        self.assertEqual(set(self.g_a_p.ha_ciclo()), set(['A', 'a1', 'B', 'a2', 'B']))
 
         self.assertFalse(self.g_desconexo_1.ha_ciclo())
         self.assertFalse(self.g_desconexo_2.ha_ciclo())

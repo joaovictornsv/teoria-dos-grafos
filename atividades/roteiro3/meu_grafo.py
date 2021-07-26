@@ -320,6 +320,8 @@ class MeuGrafo(GrafoListaAdjacencia):
             for a in arestas_incidentes:
                 v1 = self.A[a].getV1()
                 v2 = self.A[a].getV2()
+                if v1 == v2:
+                    continue
                 if v1 == vertice_atual:
                     if not vertices_examinados[v2]['temPai']:
                         vertices_examinados[v2]['pai'] = v1
@@ -362,6 +364,15 @@ class MeuGrafo(GrafoListaAdjacencia):
 
 
     def caminho_dois_vertices(self, x, y):
+        '''
+        Realiza uma verificação se existe um caminho entre os dois vértices passados nos parâmetros
+        :return: Uma lista contendo um valor booleano que representa se existe caminho ou não,
+        e o tamanho do caminho (caso exista)
+
+        Exemplo:
+        grafo.caminho_dois_vertices('x', 'y')
+        :return: [true, 4]
+        '''
         finalizada = False
 
         vertices_examinados = {}
@@ -464,6 +475,10 @@ class MeuGrafo(GrafoListaAdjacencia):
 
 
     def conexo(self):
+        '''
+        Verifica se um grafo é conexo ou não
+        :return: Valor booleano que representa se o grafo é conexo ou não
+        '''
         lista_vertices = deepcopy(self.N)
         vertice_escolhido = lista_vertices[0]
         resto_da_lista = lista_vertices[1:]
@@ -478,7 +493,12 @@ class MeuGrafo(GrafoListaAdjacencia):
 
 
     def caminho_por_dfs(self, n, V):
-                
+        '''
+        Realiza uma busca de um caminho de tamanho especificado pelo parâmetro utilizando a busca em profundidade,
+        tendo como início o vértice passado por parâmetro
+        :return: Uma lista contendo o caminho no formato [v1, a1, v2, a2 ...] ou uma exceção caso não seja possível encontrar o caminho
+        '''       
+
         finalizada = False
 
         vertices_examinados = {}
@@ -638,6 +658,12 @@ class MeuGrafo(GrafoListaAdjacencia):
 
 
     def caminho_por_bfs(self, n, V):
+        '''
+        Realiza uma busca de um caminho de tamanho especificado pelo parâmetro utilizando a busca em largura,
+        tendo como início o vértice passado por parâmetro
+        :return: Uma lista contendo o caminho no formato [v1, a1, v2, a2 ...] ou uma exceção caso não seja possível encontrar o caminho
+        '''       
+
         finalizada = False
 
         lista_vertices = deepcopy(self.N)
@@ -750,13 +776,15 @@ class MeuGrafo(GrafoListaAdjacencia):
         return lista_final
 
 
-    def caminho(self, n, V = ''):
-        tamanho = n
-        vertice_inicio = V
-        lista_vertices = deepcopy(self.N)
+    def caminho(self, n):
+        '''
+        Realiza uma busca de um caminho de tamanho especificado pelo parâmetro
+        :return: Uma lista contendo o caminho no formato [v1, a1, v2, a2 ...] ou uma exceção caso não seja possível encontrar o caminho
+        '''       
 
-        if V == '':
-            vertice_inicio = lista_vertices[0]
+        tamanho = n
+        lista_vertices = deepcopy(self.N)
+        vertice_inicio = lista_vertices[0]
 
         try:
             lista_por_dfs = self.caminho_por_dfs(tamanho, vertice_inicio)
@@ -770,6 +798,10 @@ class MeuGrafo(GrafoListaAdjacencia):
                 return ValueError('Tamanho de caminho não encontrado')
 
     def ha_ciclo(self):
+        '''
+        Realiza uma busca de um ciclo no grafo
+        :return: Uma lista contendo o caminho do ciclo no formato [v1, a1, v2, a2 ..., ax, v1] ou False caso não exista ciclo
+        '''
         lista_ciclo_final = []
         for a in self.A:
             if self.A[a].getV1() == self.A[a].getV2():
@@ -778,9 +810,6 @@ class MeuGrafo(GrafoListaAdjacencia):
                 lista_ciclo_final.append(self.A[a].getV2())
                 return lista_ciclo_final
             
-        # Pega o dfs, remove a condição da aresta de retorno e deixa ele seguir ate achar o vertice inicial de novo c
-        # Mantém a condição de não permitir vértices repetidos, apenas se for o vértice inicial
-        
 
         for a1 in self.A:
             v1_a1 = self.A[a1].getV1()
@@ -851,17 +880,19 @@ class MeuGrafo(GrafoListaAdjacencia):
 
 
     def procurar_ciclo(self, V):
+        '''
+        Realiza uma busca de um ciclo no grafo tendo como ínicio o vértice especificado no parâmetro
+        :return: Uma lista contendo o grafo final do ciclo,
+        um valor booleano que representa se há ciclo ou não e
+        um dicionário dos vértices examinados na busca
+        '''
+
         finalizada = False
 
         ha_ciclo = False
 
 
         vertices_examinados = {}
-        # Pega o dfs, remove a condição da aresta de retorno e deixa ele seguir ate achar o vertice inicial de novo c
-        # Mantém a condição de não permitir vértices repetidos, apenas se for o vértice inicial
-
-        # Salvar arestas do pai
-        # Setar o pai como nao examinado
 
         for vt in self.N:
             vertices_examinados[vt] = {
