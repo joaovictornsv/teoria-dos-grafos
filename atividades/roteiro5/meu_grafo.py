@@ -1068,8 +1068,6 @@ class MeuGrafo(GrafoListaAdjacencia):
     def eh_ponte(self, aresta):
         grafo_cpy = deepcopy(self)
 
-        ehConexo = grafo_cpy.conexo()
-
         grafo_cpy.removeAresta(aresta)
 
         ehConexo = grafo_cpy.conexo()
@@ -1129,7 +1127,6 @@ class MeuGrafo(GrafoListaAdjacencia):
                         v1 = grafo_copia.A[a].getV1()
                         v2 = grafo_copia.A[a].getV2()
                         grafo_copia.removeAresta(a)
-
 
                         if v1 == v_atual:
                             if grafo_copia.grau(v1) == 0:

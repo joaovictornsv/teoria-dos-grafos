@@ -157,6 +157,24 @@ class TestGrafo(unittest.TestCase):
         self.g_sem_ciclo_2.adicionaAresta('a1', 'D', 'E')
         self.g_sem_ciclo_2.adicionaAresta('a2', 'D', 'F')
 
+        # Grafos com caminho euleriano
+        self.g_euleriano1 = MeuGrafo(['A', 'B', 'C', 'D'])
+        self.g_euleriano1.adicionaAresta('a1', 'A', 'B')
+        self.g_euleriano1.adicionaAresta('a2', 'B', 'C')
+        self.g_euleriano1.adicionaAresta('a3', 'C', 'D')
+        self.g_euleriano1.adicionaAresta('a4', 'D', 'A')
+        self.g_euleriano1.adicionaAresta('a5', 'A', 'C')
+
+        self.g_euleriano2 = MeuGrafo(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+        self.g_euleriano2.adicionaAresta('a1', 'A', 'B')
+        self.g_euleriano2.adicionaAresta('a2', 'A', 'C')
+        self.g_euleriano2.adicionaAresta('a3', 'A', 'D')
+        self.g_euleriano2.adicionaAresta('a4', 'B', 'E')
+        self.g_euleriano2.adicionaAresta('a5', 'A', 'F')
+        self.g_euleriano2.adicionaAresta('a6', 'E', 'F')
+        self.g_euleriano2.adicionaAresta('a7', 'F', 'G')
+        self.g_euleriano2.adicionaAresta('a8', 'G', 'B')
+        self.g_euleriano2.adicionaAresta('a9', 'C', 'B')
 
 
     def test_adiciona_aresta(self):
@@ -357,3 +375,22 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse(self.g_desconexo_2.ha_ciclo())
         self.assertFalse(self.g_sem_ciclo_1.ha_ciclo())
         self.assertFalse(self.g_sem_ciclo_2.ha_ciclo())
+
+
+    def test_caminho_euleriano(self):
+        self.assertFalse(self.g_p.caminho_euleriano())
+        self.assertFalse(self.g_p_sem_paralelas.caminho_euleriano())
+        self.assertFalse(self.g_c.caminho_euleriano())
+        self.assertFalse(self.g_l1.caminho_euleriano())
+        self.assertFalse(self.g_desconexo_1.caminho_euleriano())
+
+        self.assertListEqual(self.g_a_p.caminho_euleriano(), ['A', 'a1', 'B', 'a2', 'A'])
+        self.assertListEqual(self.g_c2.caminho_euleriano(), ['Nina', 'amiga', 'Maria'])
+        self.assertListEqual(self.g_c3.caminho_euleriano(), ['J'])
+        self.assertListEqual(self.g_sem_ciclo_1.caminho_euleriano(), ['A', 'a1', 'B', 'a2', 'C'])
+        self.assertListEqual(self.g_sem_ciclo_2.caminho_euleriano(), ['E', 'a1', 'D', 'a2', 'F'])
+        self.assertListEqual(self.g_euleriano1.caminho_euleriano(), ['A', 'a1', 'B', 'a2', 'C', 'a3', 'D', 'a4', 'A', 'a5', 'C'])
+        self.assertListEqual(
+            self.g_euleriano2.caminho_euleriano(),
+            ['D', 'a3', 'A', 'a1', 'B', 'a4', 'E', 'a6', 'F', 'a5', 'A', 'a2', 'C', 'a9', 'B', 'a8', 'G', 'a7', 'F']
+        )
