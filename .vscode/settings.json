@@ -3,7 +3,7 @@
   "python.testing.unittestArgs": [
     "-v",
     "-s",
-    "./atividades/roteiro5",
+    "./atividades/roteiro6",
     "-p",
     "*_test.py"
   ],
