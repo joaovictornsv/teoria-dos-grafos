@@ -105,6 +105,21 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         return arestas_dict
 
 
+    def arestas_entre(self, v1, v2):
+        arestas_list = []
+        for linha in self.M:
+            for arestas in linha:
+                if len(arestas):
+                    keys = list(arestas.keys())
+
+                    for rotulo in keys:
+                        if arestas[rotulo].getV1() == v1 and arestas[rotulo].getV2() == v2:
+                            arestas_list.append(rotulo)
+
+        return arestas_list
+
+
+
 
 
     def dijkstra(self, u, v):
@@ -230,9 +245,25 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         
         
         if not ha_caminho:
-            print(False)
             return False
         
         else:
-            print(pis)
+            lista_caminho_dijkstra_temp = []
+            vertice_atual = v
+            lista_completa = False
+            while(not lista_completa):
+                lista_caminho_dijkstra_temp.append(vertice_atual)
+                if vertice_atual == u:
+                    lista_completa = True
+                    break
+                
+                aresta = grafo_copia.arestas_entre(pis[vertice_atual], vertice_atual)[0]
+                lista_caminho_dijkstra_temp.append(aresta)
+                vertice_atual = pis[vertice_atual]
+
+            lista_caminho_dijkstra = []
+            for i in range(len(lista_caminho_dijkstra_temp)-1, -1, -1):
+                lista_caminho_dijkstra.append(lista_caminho_dijkstra_temp[i])
+
+            return lista_caminho_dijkstra
 
