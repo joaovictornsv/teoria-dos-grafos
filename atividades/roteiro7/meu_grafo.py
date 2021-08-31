@@ -159,16 +159,20 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
             vertices = []
             for i in phis.keys():
                 if phis[i] == 0:
-                    vertices.append(phis[i])
+                    vertices.append(i)
             
             betas_filtrados = []
             
             for j in betas.keys():
-                if (betas[j] in vertices) and (not isBetaInfity(betas[j])):
-                    betas_filtrados.append(betas[j])
+                if (j in vertices) and (not isBetaInfity(j)):
+                    betas_filtrados.append(j)
 
             if len(betas_filtrados):
-                menor_beta = min(betas_filtrados)
+                menor_beta = betas_filtrados[0]
+                for v in betas_filtrados:
+                    if betas[v] < betas[menor_beta]:
+                        menor_beta = v
+
                 return menor_beta
             
             else:
@@ -223,9 +227,10 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
                 ha_caminho = False
                 fim_do_algoritmo = True
                 break
-
+        
         
         if not ha_caminho:
+            print(False)
             return False
         
         else:
