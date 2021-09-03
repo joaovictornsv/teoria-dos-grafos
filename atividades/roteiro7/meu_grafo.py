@@ -295,7 +295,6 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         phis[u] = 1
         betas[u] = 0
 
-        carga_atual = carga_inicial
         carga_em[u] = carga_inicial
 
         vertices_recarga = pts_recarga[:]
@@ -391,9 +390,6 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
 
 
         while(not fim_do_algoritmo):
-            carga_atual = carga_em[w]
-            if ehPontoDeRecarga(w):
-                carga_atual = carga_maxima
 
             arcos_de_w = grafo_copia.arestas_partindo_do_vertice(w)
             arcos_de_w_keys = list(arcos_de_w.keys())

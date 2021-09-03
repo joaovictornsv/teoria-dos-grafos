@@ -12,5 +12,5 @@ g_p.adicionaAresta('a7', 'M', 'C')
 g_p.adicionaAresta('a8', 'M', 'T')
 g_p.adicionaAresta('a9', 'T', 'Z')
 
-print(g_p.dijkstra_drone('J', 'Z', 2, 2, ['T']))
+print(g_p.dijkstra_drone('J', 'Z', 2, 1, ['T']))
 
