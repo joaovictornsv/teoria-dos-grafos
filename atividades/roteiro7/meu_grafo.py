@@ -350,17 +350,16 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
                     pi_de_vt = getPi(vt)
                     aresta_entre_pi_e_vt = grafo_copia.arestas_entre(pi_de_vt, vt)[0]
 
-                    if (betas[vt] < betas[menor_beta]) and (alphas[aresta_entre_pi_e_vt] < carga_em[pi_de_vt]):
+                    if (betas[vt] <= betas[menor_beta]) and (alphas[aresta_entre_pi_e_vt] <= carga_em[pi_de_vt]):
                         menor_beta = vt
                     
-                    if (ehPontoDeRecarga(vt)):
-                        return menor_beta
+                        if (ehPontoDeRecarga(vt)):
+                            return menor_beta
 
 
                 if menor_beta == betas_filtrados[0]:
                     pi_de_menor_beta = getPi(menor_beta)
                     aresta_entre_pi_e_menor_beta = grafo_copia.arestas_entre(pi_de_menor_beta, menor_beta)[0]
-
 
                     if (alphas[aresta_entre_pi_e_menor_beta] > carga_em[pi_de_menor_beta]):
                         menor_beta = False
@@ -390,7 +389,6 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
 
 
         while(not fim_do_algoritmo):
-
             arcos_de_w = grafo_copia.arestas_partindo_do_vertice(w)
             arcos_de_w_keys = list(arcos_de_w.keys())
 

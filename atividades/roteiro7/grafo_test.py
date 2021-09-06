@@ -40,6 +40,9 @@ class TestGrafo(unittest.TestCase):
 
         self.g_p_dijkstra_J_Z_gabarito = ['J', 'a1', 'C', 'a6', 'T', 'a9', 'Z']
 
+        self.g_p_dijkstra_drone_M_Z_gabarito = ['M', 'a8', 'T', 'a9', 'Z']
+        self.g_p_dijkstra_drone_P_E_gabarito = ['P', 'a4', 'C', 'a2', 'E']
+
         self.g_p_dijkstra_com_pesos = MeuGrafo(['J', 'C', 'E', 'P', 'M', 'T', 'Z'])
         self.g_p_dijkstra_com_pesos.adicionaAresta('a1', 'J', 'C')
         self.g_p_dijkstra_com_pesos.adicionaAresta('a2', 'C', 'E')
@@ -149,6 +152,8 @@ class TestGrafo(unittest.TestCase):
         self.g_dijkstra1.adicionaAresta('a8', 'F', 'G', 1)
 
         self.g_dijkstra1_A_G_gabarito = ['A', 'a1', 'B', 'a7', 'F', 'a8', 'G']
+        self.g_dijkstra1_drone_A_G_gabarito = ['A', 'a1', 'B', 'a7', 'F', 'a8', 'G']
+        self.g_dijkstra1_drone_A_D_gabarito = ['A', 'a1', 'B', 'a2', 'C', 'a3', 'D']
 
         self.g_dijkstra2 = MeuGrafo(['1', '2', '3', '4', '5', '6', '7', '8', '9'])
         self.g_dijkstra2.adicionaAresta('a1', '1', '2', 2)
@@ -188,3 +193,13 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse(self.g_sem_ciclo_1.dijkstra('C', 'A'))
         self.assertFalse(self.g_sem_ciclo_2.dijkstra('E', 'F'))
 
+
+    def test_dijkstra_drone(self):
+        self.assertFalse(self.g_p.dijkstra_drone('J', 'Z', 2, 1, ['T']))
+        self.assertFalse(self.g_p.dijkstra_drone('M', 'E', 1, 1, ['T']))
+        self.assertFalse(self.g_p.dijkstra_drone('M', 'Z', 0, 10, ['T']))
+        self.assertFalse(self.g_dijkstra1.dijkstra_drone('A', 'D', 1, 1, ['C']))
+        self.assertListEqual(self.g_p.dijkstra_drone('M', 'Z', 0, 10, ['M']), self.g_p_dijkstra_drone_M_Z_gabarito)
+        self.assertListEqual(self.g_p.dijkstra_drone('P', 'E', 1, 1, ['C']), self.g_p_dijkstra_drone_P_E_gabarito)
+        self.assertListEqual(self.g_dijkstra1.dijkstra_drone('A', 'G', 1, 4, ['B']), self.g_dijkstra1_drone_A_G_gabarito)
+        self.assertListEqual(self.g_dijkstra1.dijkstra_drone('A', 'D', 2, 1, ['C']), self.g_dijkstra1_drone_A_D_gabarito)
