@@ -2,6 +2,7 @@ from bibgrafo.grafo_lista_adjacencia import GrafoListaAdjacencia
 from bibgrafo.grafo_exceptions import *
 from copy import deepcopy
 from time import sleep
+from math import floor
 
 class MeuGrafo(GrafoListaAdjacencia):
 
@@ -487,3 +488,151 @@ class MeuGrafo(GrafoListaAdjacencia):
 
         
         return minimum_spanning_tree
+
+
+    def criar_baldes_de_arestas(self, lista_de_arestas: list, qtd_baldes: int):
+        baldes = []
+        for i in range(qtd_baldes):
+            baldes.append([])
+
+        menor_peso = 0
+        maior_peso = 0
+        for aresta in lista_de_arestas:
+            if aresta.getPeso() < menor_peso:
+                menor_peso = aresta.getPeso()
+            if aresta.getPeso() > maior_peso:
+                maior_peso = aresta.getPeso()
+
+
+        def selecionaBalde(peso: int):
+            balde = floor((peso - menor_peso)/(maior_peso - menor_peso)*(qtd_baldes - 2) + 1)
+            return balde
+
+
+        for aresta in lista_de_arestas:
+            balde_para_adicionar = selecionaBalde(aresta.getPeso())
+            baldes[balde_para_adicionar].append(aresta)
+
+        return baldes
+
+
+
+    def kruskal_modified(self):
+            grafo_copia = deepcopy(self)
+            vertices = deepcopy(grafo_copia.N)
+            arestas_ordenadas = grafo_copia.ordenar_arestas(grafo_copia.A)
+            baldes_de_arestas = grafo_copia.criar_baldes_de_arestas(arestas_ordenadas, 8)
+
+            arvores = {}
+            for v in vertices:
+                arvores[v] = MeuGrafo([v])
+
+            minimum_spanning_tree = MeuGrafo()
+
+            fim_algoritmo = False
+            aresta_para_deletar = ''
+
+
+            for balde in baldes_de_arestas:
+                baldeVazio = False
+                if len(balde) == 0:
+                    baldeVazio = True
+                
+                while(not baldeVazio):
+                    for a in range(len(balde)):
+                        v1 = balde[a].getV1()
+                        v2 = balde[a].getV2()
+
+                        arvores_existentes = list(arvores.keys())
+
+                        adicionou = False
+
+                        aresta_para_deletar = a
+
+                        for avs in arvores_existentes:
+
+                            if v1 in arvores[avs].N and v2 in arvores[avs].N:
+                                continue
+                            
+                            elif v1 in arvores[avs].N and v2 not in arvores[avs].N:
+                                arvores[avs].adicionaVertice(v2)
+                                if v2 not in minimum_spanning_tree.N:
+                                    minimum_spanning_tree.adicionaVertice(v2)
+                                if v1 not in minimum_spanning_tree.N:
+                                    minimum_spanning_tree.adicionaVertice(v1)
+                                arvores[avs].adicionaAresta(balde[a].getRotulo(), v1, v2, balde[a].getPeso())
+                                minimum_spanning_tree.adicionaAresta(balde[a].getRotulo(), v1, v2, balde[a].getPeso())
+
+                                adicionou = True
+                                arvore_alterada = v2
+
+                                if arvore_alterada not in list(arvores.keys()):
+                                    for arvs in list(arvores.keys()):
+                                        if arvs != avs and arvore_alterada in arvores[arvs].N:
+                                            arvore_alterada = arvs
+                                            break
+                                
+                                for vertice_arvore_alterada in arvores[arvore_alterada].N:
+                                    if vertice_arvore_alterada not in arvores[avs].N:
+                                        arvores[avs].adicionaVertice(vertice_arvore_alterada)
+
+                                for aresta_arvore_alterada in list(arvores[arvore_alterada].A.keys()):
+                                    if aresta_arvore_alterada not in list(arvores[avs].A.keys()):
+                                        arvores[avs].adicionaAresta(
+                                            arvores[arvore_alterada].A[aresta_arvore_alterada].getRotulo(),
+                                            arvores[arvore_alterada].A[aresta_arvore_alterada].getV1(),
+                                            arvores[arvore_alterada].A[aresta_arvore_alterada].getV2(),
+                                            arvores[arvore_alterada].A[aresta_arvore_alterada].getPeso(),
+                                        )
+
+                                break
+
+                            
+                            elif v2 in arvores[avs].N and v1 not in arvores[avs].N:
+                                arvores[avs].adicionaVertice(v1)
+                                if v2 not in minimum_spanning_tree.N:
+                                    minimum_spanning_tree.adicionaVertice(v2)
+                                if v1 not in minimum_spanning_tree.N:
+                                    minimum_spanning_tree.adicionaVertice(v1)
+
+                                arvores[avs].adicionaAresta(balde[a].getRotulo(), v1, v2, balde[a].getPeso())
+                                minimum_spanning_tree.adicionaAresta(balde[a].getRotulo(), v1, v2, balde[a].getPeso())
+
+                                adicionou = True
+                                arvore_alterada = v1
+
+                                if arvore_alterada not in list(arvores.keys()):
+                                    for arvs in list(arvores.keys()):
+                                        if arvs != avs and arvore_alterada in arvores[arvs].N:
+                                            arvore_alterada = arvs
+                                            break
+                                
+                                for vertice_arvore_alterada in arvores[arvore_alterada].N:
+                                    if vertice_arvore_alterada not in arvores[avs].N:
+                                        arvores[avs].adicionaVertice(vertice_arvore_alterada)
+
+                                for aresta_arvore_alterada in list(arvores[arvore_alterada].A.keys()):
+                                    if aresta_arvore_alterada not in list(arvores[avs].A.keys()):
+                                        arvores[avs].adicionaAresta(
+                                            arvores[arvore_alterada].A[aresta_arvore_alterada].getRotulo(),
+                                            arvores[arvore_alterada].A[aresta_arvore_alterada].getV1(),
+                                            arvores[arvore_alterada].A[aresta_arvore_alterada].getV2(),
+                                            arvores[arvore_alterada].A[aresta_arvore_alterada].getPeso(),
+                                        )
+
+                                break
+
+
+                            elif v1 not in arvores[avs].N and v2 not in arvores[avs].N:
+                                continue
+
+                        if arvore_alterada in list(arvores.keys()): del arvores[arvore_alterada]
+                        if adicionou: break
+                    
+
+                    balde.pop(aresta_para_deletar)
+                    if len(balde) == 0:
+                        baldeVazio = True
+                        break
+            
+            return minimum_spanning_tree
