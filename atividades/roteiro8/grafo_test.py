@@ -77,6 +77,29 @@ class TestGrafo(unittest.TestCase):
         self.g_a_p.adicionaAresta('a2', 'B', 'A')
 
 
+        # Grafos para prim e kruskal
+        self.g_pk1 = MeuGrafo(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+        self.g_pk1.adicionaAresta('a1', 'A', 'B', 1)
+        self.g_pk1.adicionaAresta('a2', 'B', 'C', 2)
+        self.g_pk1.adicionaAresta('a3', 'C', 'G', 2)
+        self.g_pk1.adicionaAresta('a4', 'G', 'F', 3)
+        self.g_pk1.adicionaAresta('a5', 'E', 'F', 4)
+        self.g_pk1.adicionaAresta('a6', 'E', 'G', 1)
+        self.g_pk1.adicionaAresta('a7', 'E', 'D', 2)
+        self.g_pk1.adicionaAresta('a8', 'A', 'D', 3)
+        self.g_pk1.adicionaAresta('a9', 'B', 'G', 5)
+        self.g_pk1.adicionaAresta('a10', 'D', 'G', 3)
+
+        self.g_pk1_gabarito = MeuGrafo(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+        self.g_pk1_gabarito.adicionaAresta('a1', 'A', 'B', 1)
+        self.g_pk1_gabarito.adicionaAresta('a2', 'B', 'C', 2)
+        self.g_pk1_gabarito.adicionaAresta('a3', 'C', 'G', 2)
+        self.g_pk1_gabarito.adicionaAresta('a4', 'G', 'F', 3)
+        self.g_pk1_gabarito.adicionaAresta('a6', 'E', 'G', 1)
+        self.g_pk1_gabarito.adicionaAresta('a7', 'E', 'D', 2)
+
+
+
     def test_adiciona_aresta(self):
         self.assertTrue(self.g_p.adicionaAresta('a10', 'J', 'C'))
         with self.assertRaises(ArestaInvalidaException):
@@ -178,3 +201,11 @@ class TestGrafo(unittest.TestCase):
 
         self.assertTrue(self.g_a_p.caminho_dois_vertices('A', 'B')[0])
         self.assertTrue(self.g_a_p.caminho_dois_vertices('A', 'B')[1] == 1)
+
+
+    def test_kruskal_modified(self):
+        self.assertEqual(self.g_pk1.kruskal_modified(), self.g_pk1_gabarito)
+
+
+    def test_prim_modified(self):
+        self.assertEqual(self.g_pk1.prim_modified(), self.g_pk1_gabarito)

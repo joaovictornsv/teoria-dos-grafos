@@ -273,7 +273,12 @@ class MeuGrafo(GrafoListaAdjacencia):
             if (grafo_copia.A[i].getPeso() < grafo_copia.A[aresta_menor_peso].getPeso()):
                 aresta_menor_peso = i
 
-        return [grafo_copia.A[aresta_menor_peso].getV1(), grafo_copia.A[aresta_menor_peso].getV2(), aresta_menor_peso]
+        return [
+            grafo_copia.A[aresta_menor_peso].getV1(),
+            grafo_copia.A[aresta_menor_peso].getV2(),
+            aresta_menor_peso,
+            grafo_copia.A[aresta_menor_peso].getPeso()
+        ]
 
 
     def aresta_menor_peso(self, dict_arestas):
@@ -287,23 +292,25 @@ class MeuGrafo(GrafoListaAdjacencia):
         return aresta_menor_peso
 
     
-    def prim(self):
+    def prim_modified(self):
         grafo_copia = deepcopy(self)
         arestas = list(grafo_copia.A.keys())
         vertices = deepcopy(grafo_copia.N)
 
 
-        v1, v2, a = grafo_copia.vertice_menor_peso()
+        v1, v2, a, p = grafo_copia.vertice_menor_peso()
         
         # pis = {}
         # for v in vertices:
         #     pis[v] = NULL
 
         grafo_prim = MeuGrafo([v1, v2])
-        grafo_prim.adicionaAresta(a, v1, v2)
+        grafo_prim.adicionaAresta(a, v1, v2, p)
         vertices_analisados = []
 
         fim_algoritmo = False
+        
+        arestas_para_ignorar = []
 
         while(not fim_algoritmo):
             vertices_na_arvore = grafo_prim.N
@@ -332,7 +339,8 @@ class MeuGrafo(GrafoListaAdjacencia):
             for aresta in list(grafo_copia.A.keys()):
                 if aresta not in list(grafo_prim.A.keys()):
                     if aresta in arestas_adjacentes_a_arvore:
-                        arestas_fora_da_arvore[aresta] = deepcopy(grafo_copia.A[aresta])
+                        if aresta not in arestas_para_ignorar:
+                            arestas_fora_da_arvore[aresta] = deepcopy(grafo_copia.A[aresta])
             
             aresta_menor_peso = grafo_copia.aresta_menor_peso(arestas_fora_da_arvore)
 
@@ -343,8 +351,10 @@ class MeuGrafo(GrafoListaAdjacencia):
                 grafo_prim.adicionaVertice(v1)
                 grafo_prim.adicionaAresta(aresta_menor_peso, v2, v1, grafo_copia.A[aresta_menor_peso].getPeso())
             else:
-                grafo_prim.adicionaVertice(v2)
-                grafo_prim.adicionaAresta(aresta_menor_peso, v1, v2, grafo_copia.A[aresta_menor_peso].getPeso())
+                if v2 not in grafo_prim.N:
+                    grafo_prim.adicionaVertice(v2)
+                    grafo_prim.adicionaAresta(aresta_menor_peso, v1, v2, grafo_copia.A[aresta_menor_peso].getPeso())
+                arestas_para_ignorar.append(aresta_menor_peso)
 
 
         return grafo_prim
