@@ -490,7 +490,10 @@ class MeuGrafo(GrafoListaAdjacencia):
         return minimum_spanning_tree
 
 
-    def criar_baldes_de_arestas(self, lista_de_arestas: list, qtd_baldes: int):
+    def criar_baldes_de_arestas(self, qtd_baldes: int):
+        grafo_copia = deepcopy(self)
+        lista_de_arestas = grafo_copia.ordenar_arestas(grafo_copia.A)
+
         baldes = []
         for i in range(qtd_baldes):
             baldes.append([])
@@ -520,8 +523,7 @@ class MeuGrafo(GrafoListaAdjacencia):
     def kruskal_modified(self):
             grafo_copia = deepcopy(self)
             vertices = deepcopy(grafo_copia.N)
-            arestas_ordenadas = grafo_copia.ordenar_arestas(grafo_copia.A)
-            baldes_de_arestas = grafo_copia.criar_baldes_de_arestas(arestas_ordenadas, 8)
+            baldes_de_arestas = grafo_copia.criar_baldes_de_arestas(8)
 
             arvores = {}
             for v in vertices:
