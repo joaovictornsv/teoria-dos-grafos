@@ -98,6 +98,61 @@ class TestGrafo(unittest.TestCase):
         self.g_pk1_gabarito.adicionaAresta('a6', 'E', 'G', 1)
         self.g_pk1_gabarito.adicionaAresta('a7', 'E', 'D', 2)
 
+        self.g_pk2 = MeuGrafo(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+        self.g_pk2.adicionaAresta('a1', 'A', 'B', 7)
+        self.g_pk2.adicionaAresta('a2', 'B', 'C', 8)
+        self.g_pk2.adicionaAresta('a3', 'C', 'E', 5)
+        self.g_pk2.adicionaAresta('a4', 'E', 'G', 9)
+        self.g_pk2.adicionaAresta('a5', 'G', 'F', 11)
+        self.g_pk2.adicionaAresta('a6', 'F', 'D', 6)
+        self.g_pk2.adicionaAresta('a7', 'D', 'A', 5)
+        self.g_pk2.adicionaAresta('a8', 'B', 'D', 9)
+        self.g_pk2.adicionaAresta('a9', 'D', 'E', 15)
+        self.g_pk2.adicionaAresta('a10', 'B', 'E', 7)
+        self.g_pk2.adicionaAresta('a11', 'F', 'E', 8)
+
+        self.g_pk2_gabarito = MeuGrafo(['A', 'B', 'C', 'D', 'E', 'F', 'G'])
+        self.g_pk2_gabarito.adicionaAresta('a1', 'A', 'B', 7)
+        self.g_pk2_gabarito.adicionaAresta('a3', 'C', 'E', 5)
+        self.g_pk2_gabarito.adicionaAresta('a4', 'E', 'G', 9)
+        self.g_pk2_gabarito.adicionaAresta('a6', 'F', 'D', 6)
+        self.g_pk2_gabarito.adicionaAresta('a7', 'D', 'A', 5)
+        self.g_pk2_gabarito.adicionaAresta('a10', 'B', 'E', 7)
+
+        self.g_pk3 = MeuGrafo(['0', '1', '2', '3', '4', '5'])
+        self.g_pk3.adicionaAresta('a1', '1', '0', 1)
+        self.g_pk3.adicionaAresta('a2', '0', '2', 5)
+        self.g_pk3.adicionaAresta('a3', '2', '4', 2)
+        self.g_pk3.adicionaAresta('a4', '4', '5', 4)
+        self.g_pk3.adicionaAresta('a5', '5', '3', 2)
+        self.g_pk3.adicionaAresta('a6', '3', '1', 5)
+        self.g_pk3.adicionaAresta('a7', '1', '2', 2)
+        self.g_pk3.adicionaAresta('a8', '1', '4', 2)
+        self.g_pk3.adicionaAresta('a9', '3', '4', 1)
+
+        self.g_pk3_gabarito = MeuGrafo(['0', '1', '2', '3', '4', '5'])
+        self.g_pk3_gabarito.adicionaAresta('a1', '1', '0', 1)
+        self.g_pk3_gabarito.adicionaAresta('a3', '2', '4', 2)
+        self.g_pk3_gabarito.adicionaAresta('a5', '5', '3', 2)
+        self.g_pk3_gabarito.adicionaAresta('a7', '1', '2', 2)
+        self.g_pk3_gabarito.adicionaAresta('a9', '3', '4', 1)
+
+        self.g_pk4 = MeuGrafo(['A', 'B', 'C', 'D', 'E', 'F'])
+        self.g_pk4.adicionaAresta('a1', 'A', 'B', 4)
+        self.g_pk4.adicionaAresta('a2', 'B', 'C', 8)
+        self.g_pk4.adicionaAresta('a3', 'C', 'D', 2)
+        self.g_pk4.adicionaAresta('a4', 'D', 'E', 6)
+        self.g_pk4.adicionaAresta('a5', 'E', 'F', 1)
+        self.g_pk4.adicionaAresta('a6', 'F', 'A', 8)
+        self.g_pk4.adicionaAresta('a7', 'B', 'F', 11)
+        self.g_pk4.adicionaAresta('a8', 'F', 'D', 7)
+
+        self.g_pk4_gabarito = MeuGrafo(['A', 'B', 'C', 'D', 'E', 'F'])
+        self.g_pk4_gabarito.adicionaAresta('a1', 'A', 'B', 4)
+        self.g_pk4_gabarito.adicionaAresta('a2', 'B', 'C', 8)
+        self.g_pk4_gabarito.adicionaAresta('a3', 'C', 'D', 2)
+        self.g_pk4_gabarito.adicionaAresta('a4', 'D', 'E', 6)
+        self.g_pk4_gabarito.adicionaAresta('a5', 'E', 'F', 1)
 
 
     def test_adiciona_aresta(self):
@@ -205,7 +260,13 @@ class TestGrafo(unittest.TestCase):
 
     def test_kruskal_modified(self):
         self.assertEqual(self.g_pk1.kruskal_modified(), self.g_pk1_gabarito)
+        self.assertEqual(self.g_pk2.kruskal_modified(), self.g_pk2_gabarito)
+        self.assertEqual(self.g_pk3.kruskal_modified(), self.g_pk3_gabarito)
+        self.assertEqual(self.g_pk4.kruskal_modified(), self.g_pk4_gabarito)
 
 
     def test_prim_modified(self):
         self.assertEqual(self.g_pk1.prim_modified(), self.g_pk1_gabarito)
+        self.assertEqual(self.g_pk2.prim_modified(), self.g_pk2_gabarito)
+        self.assertEqual(self.g_pk3.prim_modified(), self.g_pk3_gabarito)
+        self.assertEqual(self.g_pk4.prim_modified(), self.g_pk4_gabarito)
